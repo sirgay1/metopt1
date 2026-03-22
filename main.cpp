@@ -1,5 +1,6 @@
 #include "lp_utils.h"
 #include "simplex.h"
+#include "brute_force.h"
 #include <iostream>
 #include <vector>
 
@@ -92,5 +93,18 @@ int main() {
         for (size_t i = 0; i < x_orig.size(); ++i)
             cout << "y" << i+1 << " = " << x_orig[i] << "\n";
     }
+    
+    // Решение перебором вершин
+    BruteForceResult bfResult = bruteForceSolve(cp);
+    if (bfResult.feasible) {
+        std::cout << "Оптимум (перебор): " << bfResult.optimalValue << "\n";
+        std::vector<double> x_orig = recoverSolution(cp, bfResult.solution);
+        std::cout << "Решение: ";
+        for (double val : x_orig) std::cout << val << " ";
+        std::cout << "\n";
+    } else {
+        std::cout << "Задача недопустима (по результатам перебора).\n";
+    }
+    
     return 0;
 }
